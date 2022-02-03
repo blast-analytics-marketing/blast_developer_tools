@@ -1,0 +1,14 @@
+title = "Blast Example ETL"
+[etl]
+  name = "blast_example"
+  timezone = "America/Los_Angeles"
+  source = "bigquery"
+  sink = "redshift"
+
+[aws]
+  region = "us-west-2"
+  profile = "default_user"
+
+[gcp]
+  region = "us-west2"
+  profile = "default_user"

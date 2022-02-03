@@ -1,3 +1,44 @@
+# os system files
+.DS_Store
+desktop.ini
+
+# temp files
+*._
+*~*
+*.bak
+
+# file extensions
+*.csv
+*.bz2
+*.gzip
+*.json
+*.log
+*.lock
+*.pdf
+*.txt
+*.docx
+*.xlsx
+
+# other IDEs
+.conda/
+.idea/
+.venv/
+*.code-workspace
+.vscode/
+
+
+# subdirectories
+**/docs/
+**/json/
+**/pep8_errors/
+**/sql/
+**/test/
+
+# api keys
+**/config/*private*
+*.properties
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

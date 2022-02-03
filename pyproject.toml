@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "Blast Developer Tools"
+version = "0.1.2"
+description = "Open Source Developer Tools for Blast Analtyics and Marketing"
+authors = [
+    "Lee Benke <lee.benke@blastam.com>",
+    "Emile Averill <emile.averill@blastam.com>",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+pandas = "*"
+toml = "*"
+
+blast-dev-tools = {path = "./dev_tools/blast-dev-tools", develop=true}
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
