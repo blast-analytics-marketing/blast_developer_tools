@@ -18,6 +18,7 @@ desktop.ini
 *.txt
 *.docx
 *.xlsx
+*.zip
 
 # other IDEs
 .conda/

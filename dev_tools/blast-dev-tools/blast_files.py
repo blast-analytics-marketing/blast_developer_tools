@@ -20,6 +20,7 @@ import string
 import random
 import hashlib
 import uuid
+import shutil
 import pprint as pp
 from pathlib import Path
 from blast_logging import log_exception, log_info, setup_logger
@@ -147,6 +148,48 @@ def get_files_by_extension(file_path: Path, file_ext: str = ".csv") -> list:
     return sorted(path_list)
 
 
+def count_files_by_ext(input_path: Path, file_ext: str = "") -> int:
+    """non-recursive count number of files in directory (by extension optional)"""
+    path_list = []
+    input_path = Path(input_path)
+    if input_path.exists():
+        path_list = [
+            p.absolute()
+            for p in sorted(input_path.glob(f"*{file_ext}"))
+            if p.is_file() and is_not_config(p)
+        ]
+    return len(path_list)
+
+
+def copy_all_files(src_path: Path, dst_path: Path) -> bool:
+    """copies all files (any extension) from source to destination."""
+    src_path = Path(src_path)
+    src_count = -1
+    dst_count = 0
+    if src_path.exists():
+        try:
+            src_path_list = [
+                p.absolute()
+                for p in sorted(src_path.glob("*"))
+                if p.is_file() and is_not_config(p)
+            ]
+            src_count = len(src_path_list)
+
+            dst_path = Path(dst_path)
+            if not dst_path.parent.exists():
+                dst_path.parent.mkdir(parents=True, exist_ok=True)
+
+            for src_filepath in src_path_list:
+                shutil.copy2(src_filepath, dst_path)
+
+            dst_count = count_files_by_ext(dst_path)
+        except IOError:
+            print(f"ERROR: copy_all_files {src_path}")
+    else:
+        print(f"path does not exist: {src_path}")
+    return src_count == dst_count
+
+
 def purge_prior_extract(file_path: Path, logger=None):
     """removes files from prior ETL processing"""
     method = f"{inspect.currentframe().f_code.co_name}()"
@@ -158,7 +201,7 @@ def purge_prior_extract(file_path: Path, logger=None):
         for remove_path in all_paths:
             os.remove(remove_path)
             purged_files.append(remove_path.name)
-        purge_count = len(all_paths)
+        purge_count = len(purged_files)
         if purge_count > 0:
             log_info(logger=logger, msg=f"{method} removed {purge_count} file(s) {purged_files}")
     except (OSError, PermissionError):

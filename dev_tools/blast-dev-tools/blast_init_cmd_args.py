@@ -90,7 +90,6 @@ def parse_cmd_args(logger=None) -> dict:
     args = vars(parser.parse_args())
 
     days_ago = int(args["days_ago"])
-    # ignore negatives and over two weeks
     if days_ago < 0:
         print(f"{method} invalid: '{days_ago}' cannot be negative, using positive")
         days_ago *= -1

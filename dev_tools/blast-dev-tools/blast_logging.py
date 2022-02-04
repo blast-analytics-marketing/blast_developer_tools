@@ -32,7 +32,8 @@ CWD_PATH = MODULE_PATH.parent.parent
 
 
 def setup_logger(
-        src_file: Path, log_file=Path(CWD_PATH.parent, "logs", "blast_dev_tools.log"), std_out: bool = True
+        src_file: Path,
+        log_file=Path(CWD_PATH.parent, "logs", "blast_dev_tools.log"), std_out: bool = True
 ) -> logging.Logger:
     """logging setup with both file and console output"""
     if not log_file.parent.exists():
@@ -107,6 +108,15 @@ def get_hostname() -> str:
     return str(platform.node()).lower().replace(".local", "")
 
 
+def get_current_username() -> str:
+    """Returns current username on host."""
+    try:
+        curr_username = os.getlogin()
+    except OSError:
+        curr_username = "docker"
+    return curr_username
+
+
 def get_relevant_env_vars(include_all=False) -> dict:
     """shows environmental variables"""
     env_dict = {}
@@ -140,6 +150,22 @@ def set_env_variable(key="PY_ENVIRONMENT", val="production") -> None:
         result = os.environ.get(key)
     if result != val:
         print(f"{method} {result} != {val}")
+
+
+def check_platform() -> str:
+    """checks host operating system running python module."""
+    sys_platform = sys.platform
+    host_os = "unknown"
+    if "linux" in sys_platform:
+        print(f"{platform.node()} running on Linux")
+        host_os = "linux"
+    elif "darwin" in sys_platform:
+        print(f"{platform.node()} running on MacOS")
+        host_os = "macos"
+    elif "win" in sys_platform:
+        print(f"{platform.node()} running on Windows")
+        host_os = "win"
+    return host_os
 
 
 def show_installed_packages() -> None:
